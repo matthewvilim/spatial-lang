@@ -842,7 +842,7 @@ object Utils {
       case u: UInt => u
     }
 
-    val ff = Module(new fringe.FF(sig.getWidth))
+    val ff = Module(new fringe.FF(UInt(sig.getWidth.W)))
     ff.io.init := 0.U
     ff.io.in := in
     ff.io.enable := en
@@ -872,7 +872,7 @@ object Utils {
     }
     else {
       if (regression_testing == "1") { // Major hack until someone helps me include the sv file in Driver (https://groups.google.com/forum/#!topic/chisel-users/_wawG_guQgE)
-        chisel3.util.ShiftRegister(sig, delay)
+        chisel3.util.ShiftRegister(sig, delay, flow)
       } else {
         val sr = Module(new RetimeWrapper(sig.getWidth, delay))
         sr.io.in := sig.asUInt
